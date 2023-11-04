@@ -1,3 +1,4 @@
+import { useDataProvider } from "@/context";
 import styles from "@/styles/Home.module.css";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
@@ -11,8 +12,10 @@ export default function Home() {
     useState(false);
   const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
   const { address, isConnecting, isDisconnected } = useAccount();
-  const [contract, setContract] = useState<any>(null);
+  const { setContract, getContract, getIsFirstAccess, setIsFirstAccess } =
+    useDataProvider();
   const injectedETh = window.ethereum;
+  const contract = getContract();
 
   useEffect(() => {
     if (!injectedETh) return;
@@ -773,18 +776,22 @@ export default function Home() {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     contract && setContract(contract);
-  }, [injectedETh]);
+  }, [injectedETh, setContract]);
 
   useEffect(() => {
     if (!address || !contract) return;
 
-    console.log("here", contract);
     (async () => {
       const res = await contract.methods
         .getUserHistory(address)
         .call({ from: address });
 
-      console.log("res from contract", res);
+      if (!res) {
+        console.log("Failed to interact with contract");
+        return;
+      }
+
+      localStorage.setItem("firstAccess", String(res.length == 0));
     })();
   }, [address, contract]);
 
@@ -834,14 +841,17 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         {address ? (
-          <GoogleButton
-            onClick={() =>
-              signIn("google", {
-                redirect: true,
-                callbackUrl: "/dashboard",
-              })
-            }
-          />
+          <div className={styles.mainCTA}>
+            <h1>Ready to Start ?</h1>
+            <GoogleButton
+              onClick={() =>
+                signIn("google", {
+                  redirect: true,
+                  callbackUrl: "/dashboard",
+                })
+              }
+            />
+          </div>
         ) : (
           <h1>Connect your wallet</h1>
         )}
