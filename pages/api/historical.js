@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 export const config = {
   api: {
     responseLimit: "50mb",
