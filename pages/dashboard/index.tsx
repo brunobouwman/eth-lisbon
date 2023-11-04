@@ -1,15 +1,25 @@
 import { useDataProvider } from "@/context";
 import styles from "@/styles/Home.module.css";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import CheckButton from "../../src/components/CheckButton";
+import { useContext, useEffect } from "react";
+import Web3MailContext from "../web3mail";
+// import CheckButton from "../../src/components/CheckButton";
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const { getIsFirstAccess, setIsFirstAccess, setLastReading } =
-    useDataProvider();
+  const {
+    getIsFirstAccess,
+    setIsFirstAccess,
+    setLastReading,
+    getLastReading,
+    getGrantAccess,
+    setGrantAccess,
+  } = useDataProvider();
   const isFirstAccess = getIsFirstAccess();
-  const [checked, setChecked] = useState(false);
+  const { protectEmailAndGrantAccess } = useContext(Web3MailContext);
+  const lastReading = getLastReading();
+
+  const grantAccess = getGrantAccess();
 
   useEffect(() => {
     const storedData = localStorage.getItem("isChecked");
@@ -18,12 +28,19 @@ export default function Dashboard() {
 
     const parsedData: boolean = JSON.parse(storedData);
 
-    setChecked(parsedData);
+    setGrantAccess(parsedData);
   }, []);
 
   const toggleNotifications = (state: boolean) => {
     localStorage.setItem("isChecked", String(state));
-    setChecked(state);
+
+    if (state && lastReading) {
+      (async () => {
+        await protectEmailAndGrantAccess(lastReading.email);
+      })();
+    }
+
+    setGrantAccess(state);
   };
 
   useEffect(() => {
@@ -45,19 +62,20 @@ export default function Dashboard() {
 
         if (res) {
           const { data: parsedData } = await res.json();
-          console.log("parsed", parsedData);
+
+          if (!parsedData) return;
 
           if (parsedData.length !== 0) {
-            const reading = parsedData.reduce((prev: any, current: any) => {
+            const lastData = parsedData.reduce((prev: any, current: any) => {
               return prev.value > current.value ? prev : current;
             });
 
-            setLastReading(reading.value);
+            setLastReading({ email: lastData.email, steps: lastData.value });
           }
         }
       })();
     }
-  }, [session]);
+  }, [session, setLastReading]);
 
   return (
     <div className={styles.dashboard}>
@@ -95,10 +113,13 @@ export default function Dashboard() {
 
       <div className={styles.mainCTA}>
         <h1>Want to be notified ?</h1>
-        <CheckButton
-          onClick={() => toggleNotifications(!checked)}
-          checked={checked}
-        />
+        <button onClick={() => toggleNotifications(!grantAccess)}>
+          TOGGLE
+        </button>
+        {/* <CheckButton
+          onClick={() => toggleNotifications(!grantAccess)}
+          checked={grantAccess}
+        /> */}
       </div>
     </div>
   );

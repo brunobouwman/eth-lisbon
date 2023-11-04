@@ -12,8 +12,7 @@ export default function Home() {
     useState(false);
   const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
   const { address, isConnecting, isDisconnected } = useAccount();
-  const { setContract, getContract, getIsFirstAccess, setIsFirstAccess } =
-    useDataProvider();
+  const { setContract, getContract } = useDataProvider();
   const injectedETh = window.ethereum;
   const contract = getContract();
 

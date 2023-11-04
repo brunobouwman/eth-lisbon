@@ -16,6 +16,7 @@ import {
   sepolia,
 } from "wagmi/chains";
 import { DataProvider } from "../src/context";
+import { Web3MailProvider } from "./web3mail";
 
 const chains = [
   mainnet,
@@ -56,7 +57,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <WagmiConfig config={wagmiConfig}>
           <SessionProvider>
             <DataProvider>
-              <Component {...pageProps} />
+              <Web3MailProvider>
+                <Component {...pageProps} />
+              </Web3MailProvider>
             </DataProvider>
           </SessionProvider>
         </WagmiConfig>
