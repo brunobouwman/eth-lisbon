@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
-
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { WagmiConfig } from "wagmi";
@@ -13,7 +13,9 @@ import {
   mainnet,
   optimism,
   polygon,
+  sepolia,
 } from "wagmi/chains";
+import { DataProvider } from "../src/context";
 
 const chains = [
   mainnet,
@@ -24,6 +26,7 @@ const chains = [
   optimism,
   gnosis,
   fantom,
+  sepolia,
 ];
 
 // 1. Get projectID at https://cloud.walletconnect.com
@@ -51,7 +54,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       {ready ? (
         <WagmiConfig config={wagmiConfig}>
-          <Component {...pageProps} />
+          <SessionProvider>
+            <DataProvider>
+              <Component {...pageProps} />
+            </DataProvider>
+          </SessionProvider>
         </WagmiConfig>
       ) : null}
     </>

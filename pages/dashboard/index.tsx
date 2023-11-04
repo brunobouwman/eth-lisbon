@@ -1,6 +1,26 @@
 import styles from "@/styles/Home.module.css";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import GoogleButton from "react-google-button";
 export default function Dashboard() {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    console.log("session", session);
+
+    if (session) {
+      (async () => {
+        const res = await fetch(
+          `/api/historical?refreshToken=${(session as any).refreshToken}`
+        );
+
+        if (res) {
+          console.log("parsed", await res.json());
+        }
+        console.log("res", res);
+      })();
+    }
+  }, [session]);
   //   const [session, loading] = useSession();
   //   const { data: userData } = useSession();
 
