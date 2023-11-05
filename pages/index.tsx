@@ -842,7 +842,7 @@ export default function Home() {
         type: "function",
       },
     ];
-    const contractAddress = "0xe3EB354884c7f70f064fcE9289F2D570C802796A";
+    const contractAddress = "0x1e2319EdBfb7BB0e9311898113747F42A65C74e0";
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 

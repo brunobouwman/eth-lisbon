@@ -857,9 +857,11 @@ export default function Dashboard() {
         type: "function",
       },
     ];
-    const contractAddress = "0xe3EB354884c7f70f064fcE9289F2D570C802796A";
+    const contractAddress = "0x1e2319EdBfb7BB0e9311898113747F42A65C74e0";
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    console.log("contract", contract);
 
     contract && setContract(contract);
   }, [injectedETh, setContract]);
@@ -976,7 +978,7 @@ export default function Dashboard() {
   };
 
   const mintTodaysNFT = async () => {
-    if (!lastReading?.steps) return;
+    // if (!lastReading?.steps) return;
 
     const steps = lastReading?.steps;
 
@@ -984,11 +986,11 @@ export default function Dashboard() {
     setMintMessage("Loading ...");
 
     try {
-      const res = await contract.methods.mint(steps).send({ from: address });
+      const res = await contract.methods.mint(7000).send({ from: address });
 
-      console.log("res", await res.json());
+      console.log("res", res);
       setMintMessage("Minted NFT successfully");
-      setTimeout(() => setMintLoading(false), 2000);
+      setTimeout(() => setMintMessage("Good Job! Come back tomorrow!"), 2000);
     } catch (err) {
       setMintMessage("Failed to mint NFT");
       setTimeout(() => setMintLoading(false), 2000);
@@ -1094,7 +1096,7 @@ export default function Dashboard() {
             </div>
             <div className={styles.toggleCTA}>
               <h3>All data protected by </h3>
-              <Image src={IMAGE_EXEC} height={100} width={250} alt="iExec" />
+              <Image src={IMAGE_EXEC} height={75} width={150} alt="iExec" />
             </div>
           </div>
         </div>
