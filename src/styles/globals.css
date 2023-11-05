@@ -70,6 +70,10 @@ li {
 	list-style-position: inside;
 }
 
+span {
+	color: white;
+}
+
 header {
 	position: fixed;
 	width: 100%;

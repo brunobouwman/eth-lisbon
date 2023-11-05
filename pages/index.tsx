@@ -25,6 +25,24 @@ export default function Home() {
       {
         inputs: [
           {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "approve",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
             internalType: "string",
             name: "_prefixURI",
             type: "string",
@@ -160,6 +178,37 @@ export default function Home() {
       {
         inputs: [
           {
+            internalType: "uint256",
+            name: "stepCount",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "lastGoal",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "stepCount",
+            type: "uint256",
+          },
+        ],
+        name: "mint",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
             internalType: "address",
             name: "owner",
             type: "address",
@@ -230,6 +279,37 @@ export default function Home() {
         type: "event",
       },
       {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "stepCount",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "firstGoal",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "firstMint",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
         anonymous: false,
         inputs: [
           {
@@ -247,263 +327,6 @@ export default function Home() {
         ],
         name: "OwnershipTransferred",
         type: "event",
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: "address",
-            name: "from",
-            type: "address",
-          },
-          {
-            indexed: true,
-            internalType: "address",
-            name: "to",
-            type: "address",
-          },
-          {
-            indexed: true,
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "Transfer",
-        type: "event",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "to",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "approve",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address",
-          },
-        ],
-        name: "balanceOf",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "cost",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        name: "entries",
-        outputs: [
-          {
-            internalType: "string",
-            name: "dailySteps",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "firstStepCount",
-            type: "uint256",
-          },
-        ],
-        name: "firstGoal",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "getApproved",
-        outputs: [
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "userAddress",
-            type: "address",
-          },
-        ],
-        name: "getUserHistory",
-        outputs: [
-          {
-            components: [
-              {
-                internalType: "string",
-                name: "dailySteps",
-                type: "string",
-              },
-              {
-                internalType: "uint256",
-                name: "timestamp",
-                type: "uint256",
-              },
-            ],
-            internalType: "struct WellNFT.Entry[]",
-            name: "",
-            type: "tuple[]",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "goal",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "owner",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "operator",
-            type: "address",
-          },
-        ],
-        name: "isApprovedForAll",
-        outputs: [
-          {
-            internalType: "bool",
-            name: "",
-            type: "bool",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "valueToCompare",
-            type: "uint256",
-          },
-        ],
-        name: "mint",
-        outputs: [],
-        stateMutability: "payable",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "name",
-        outputs: [
-          {
-            internalType: "string",
-            name: "",
-            type: "string",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "owner",
-        outputs: [
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "tokenId",
-            type: "uint256",
-          },
-        ],
-        name: "ownerOf",
-        outputs: [
-          {
-            internalType: "address",
-            name: "",
-            type: "address",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
       },
       {
         inputs: [],
@@ -595,6 +418,266 @@ export default function Home() {
         type: "function",
       },
       {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            indexed: true,
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "Transfer",
+        type: "event",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "transferFrom",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "newOwner",
+            type: "address",
+          },
+        ],
+        name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_newGoal",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "updateGoal",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
+        ],
+        name: "balanceOf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        name: "entries",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "dailyGoal",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "getApproved",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "getLastGoal",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "userAddress",
+            type: "address",
+          },
+        ],
+        name: "getUserHistory",
+        outputs: [
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "dailyGoal",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "timestamp",
+                type: "uint256",
+              },
+            ],
+            internalType: "struct WellNFT.Entry[]",
+            name: "",
+            type: "tuple[]",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "operator",
+            type: "address",
+          },
+        ],
+        name: "isApprovedForAll",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "name",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "owner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+        ],
+        name: "ownerOf",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
         inputs: [
           {
             internalType: "bytes4",
@@ -673,6 +756,25 @@ export default function Home() {
         inputs: [
           {
             internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        name: "tokenType",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
             name: "_tokenId",
             type: "uint256",
           },
@@ -704,50 +806,20 @@ export default function Home() {
       {
         inputs: [
           {
-            internalType: "address",
-            name: "from",
-            type: "address",
-          },
-          {
-            internalType: "address",
-            name: "to",
-            type: "address",
-          },
-          {
             internalType: "uint256",
-            name: "tokenId",
+            name: "value",
             type: "uint256",
           },
         ],
-        name: "transferFrom",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
+        name: "uintToString",
+        outputs: [
           {
-            internalType: "address",
-            name: "newOwner",
-            type: "address",
+            internalType: "string",
+            name: "",
+            type: "string",
           },
         ],
-        name: "transferOwnership",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "_newGoal",
-            type: "uint256",
-          },
-        ],
-        name: "updateGoal",
-        outputs: [],
-        stateMutability: "nonpayable",
+        stateMutability: "pure",
         type: "function",
       },
       {
@@ -770,7 +842,7 @@ export default function Home() {
         type: "function",
       },
     ];
-    const contractAddress = "0xcD0515F4d0e7FF475473cEBCba5fCFD6207A0b79";
+    const contractAddress = "0xe3EB354884c7f70f064fcE9289F2D570C802796A";
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -816,7 +888,7 @@ export default function Home() {
         />
         <div className={styles.header}>
           <div className={styles.logo}>
-            <span>WELL WELL WELL</span>
+            <h2>WELL WELL WELL</h2>
           </div>
           <div className={styles.buttons}>
             <div
