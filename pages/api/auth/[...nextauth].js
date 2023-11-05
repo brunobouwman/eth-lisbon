@@ -2,6 +2,7 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
+  secret: "google-api-secret",
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -18,11 +19,10 @@ export const authOptions = {
       },
     }),
   ],
-  secret: "google-api-secret",
   jwt: {
     encryption: true,
   },
-  secret: process.env.SECRET,
+  secret: "google-api-secret",
   callbacks: {
     async jwt({ token, user, account }) {
       if (account && user) {
