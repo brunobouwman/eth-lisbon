@@ -22,7 +22,6 @@ export const authOptions = {
   jwt: {
     encryption: true,
   },
-  secret: "google-api-secret",
   callbacks: {
     async jwt({ token, user, account }) {
       if (account && user) {
