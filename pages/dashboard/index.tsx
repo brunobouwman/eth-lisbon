@@ -1,11 +1,16 @@
 import { useDataProvider } from "@/context";
+import { IMAGE_5k, IMAGE_6k, IMAGE_WELCOME } from "@/index";
 import styles from "@/styles/Home.module.css";
 import { useSession } from "next-auth/react";
-import { useContext, useEffect } from "react";
+import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
 import Web3MailContext from "../web3mail";
 // import CheckButton from "../../src/components/CheckButton";
 
 export default function Dashboard() {
+  const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
+    useState(false);
+  const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
   const { data: session } = useSession();
   const {
     getIsFirstAccess,
@@ -77,50 +82,109 @@ export default function Dashboard() {
     }
   }, [session, setLastReading]);
 
+  const closeAll = () => {
+    setIsNetworkSwitchHighlighted(false);
+    setIsConnectHighlighted(false);
+  };
+
   return (
-    <div className={styles.dashboard}>
-      <div className={styles.topSection}>
-        <div className={styles.dailyGoal}>
-          <div className={styles.mainCTA}>
-            <h1>Objetivo Diario</h1>
-            <h2>Steps: 10,000</h2>
+    <>
+      <header>
+        <div
+          className={styles.backdrop}
+          style={{
+            opacity: isConnectHighlighted || isNetworkSwitchHighlighted ? 1 : 0,
+          }}
+        />
+        <div className={styles.header}>
+          <div className={styles.logo}>
+            <span>WELL WELL WELL</span>
+          </div>
+          <div className={styles.buttons}>
+            <div
+              onClick={closeAll}
+              className={`${styles.highlight} ${
+                isNetworkSwitchHighlighted ? styles.highlightSelected : ``
+              }`}
+            >
+              <w3m-network-button />
+            </div>
+            <div
+              onClick={closeAll}
+              className={`${styles.highlight} ${
+                isConnectHighlighted ? styles.highlightSelected : ``
+              }`}
+            >
+              <w3m-button />
+            </div>
           </div>
         </div>
-        <div className={styles.lastAchievement}>
-          <h2>Última Conquista</h2>
-          {/* <img src="" alt="NFT" /> */}
-          {/* Replace 'nft-image.jpg' with your NFT image */}
-          {/* <p>Your progress is notorious, keep going!</p> */}
-        </div>
-      </div>
+      </header>
+      <main className={styles.dashboardMain}>
+        <div className={styles.dashboard}>
+          <div className={styles.topSection}>
+            <div className={styles.dailyGoal}>
+              <div className={styles.mainCTA}>
+                <h1>Daily Objective</h1>
+                <Image
+                  src={IMAGE_6k}
+                  height={200}
+                  width={200}
+                  alt="Objective"
+                />
+              </div>
+            </div>
+            <div className={styles.lastAchievement}>
+              <div className={styles.mainCTA}>
+                <h1>Last Accomplishment</h1>
+                <Image
+                  src={IMAGE_5k}
+                  height={200}
+                  width={200}
+                  alt="last-Accomplishment"
+                />
+                <button className={styles.startedButton}>
+                  See your collection
+                </button>
+              </div>
+            </div>
+          </div>
 
-      {isFirstAccess ? (
-        <div className={styles.mainCTA}>
-          <h1>First time here?</h1>
-          <button
-            className={styles.startedButton}
-            onClick={() => setIsFirstAccess(false)}
-          >
-            Mint your first NFT
-          </button>
-        </div>
-      ) : (
-        <div className={styles.mainCTA}>
-          <h1>Ready to show your work?</h1>
-          <button className={styles.startedButton}>Claim todays NFT</button>
-        </div>
-      )}
+          {isFirstAccess ? (
+            <div className={styles.mainCTA}>
+              <h1>First time here?</h1>
+              <Image
+                src={IMAGE_WELCOME}
+                height={200}
+                width={200}
+                alt="Objective"
+              />
+              <button
+                className={styles.startedButton}
+                onClick={() => setIsFirstAccess(false)}
+              >
+                Mint your first NFT
+              </button>
+            </div>
+          ) : (
+            <div className={styles.mainCTA}>
+              <h1>Ready to show your work?</h1>
+              <button className={styles.startedButton}>Claim todays NFT</button>
+            </div>
+          )}
 
-      <div className={styles.mainCTA}>
+          {/* <div className={styles.mainCTA}>
         <h1>Want to be notified ?</h1>
         <button onClick={() => toggleNotifications(!grantAccess)}>
-          TOGGLE
+        TOGGLE
         </button>
-        {/* <CheckButton
-          onClick={() => toggleNotifications(!grantAccess)}
-          checked={grantAccess}
-        /> */}
-      </div>
-    </div>
+        <CheckButton
+        onClick={() => toggleNotifications(!grantAccess)}
+        checked={grantAccess}
+        />
+      </div> */}
+        </div>
+      </main>
+    </>
   );
 }

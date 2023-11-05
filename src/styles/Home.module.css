@@ -22,17 +22,21 @@
   height: 50%;
   width: 100%;
   padding: 20px;
+  border: 1px solid gray;
+}
+
+.dashboardMain {
+  padding-top: 2rem;
 }
 
 .dailyGoal,
 .lastAchievement {
-  flex: 2;
+  flex: 3;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50%;
-  border: 1px solid green;
 }
 
 .ctaSection {

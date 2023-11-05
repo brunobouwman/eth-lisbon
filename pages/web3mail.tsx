@@ -78,15 +78,11 @@ const Web3MailProvider = ({ children }: { children: ReactNode }) => {
       let newProtectedEmail;
 
       if (!emailIsProtected) {
-        try {
-          newProtectedEmail = await dataProtector.protectData({
-            data: {
-              email: "brunofbouwman@gmail.com",
-            },
-          });
-        } catch (err) {
-          console.log("err", err);
-        }
+        newProtectedEmail = await dataProtector.protectData({
+          data: {
+            email: "brunofbouwman@gmail.com",
+          },
+        });
 
         log("Web3MailProvider ---- protectEmailAndGrantAccess", {
           newProtectedEmail,
