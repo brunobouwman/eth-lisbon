@@ -1,6 +1,7 @@
+"use client";
+
 import { useDataProvider } from "@/context";
 import styles from "@/styles/Home.module.css";
-import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import GoogleButton from "react-google-button";
@@ -15,6 +16,93 @@ export default function Home() {
   const { setContract, getContract } = useDataProvider();
   const injectedETh = window.ethereum;
   const contract = getContract();
+
+  const test = async () => {
+    const response = await fetch("http://localhost:3000/api/updateHealthData", {
+      method: "POST",
+    });
+  };
+
+  useEffect(() => {
+    console.log("here");
+    const params = {
+      // Format your parameters similar to how they are passed in Docker
+      iexec_args: "encryptTest 0xabcdefghijklmnopqrstuv 'Test data to encrypt'",
+    };
+
+    (async () => {
+      if (!window.ethereum) return;
+
+      // const response = await fetch(
+      //   "http://localhost:3000/api/updateHealthData",
+      //   { method: "POST" }
+      // );
+      // const chainId = 134;
+
+      // const iExec = new IExec({ ethProvider: 134 });
+      // console.log("exec", iExec);
+
+      // const appOrder = await iExec.order.createApporder({
+      //   app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
+      //   appprice: "0",
+      //   volume: "1",
+      // });
+
+      // const signedAppOrder = await iExec.order.signApporder(appOrder);
+
+      // const workerPoolOrder = await iExec.order.createWorkerpoolorder({
+      //   workerpool: "0x5AA676E7991cB55d2b87ec0915E36Cc7e7B9c8eD",
+      //   workerpoolprice: "0",
+      //   volume: "1",
+      //   category: "1",
+      // });
+
+      // const signedWorkerPoolOrder = await iExec.order.signWorkerpoolorder(
+      //   workerPoolOrder
+      // );
+
+      // const requestOrder = await iExec.order.createRequestorder({
+      //   requester: "0x35bC01A7e00568960e158e59486de522E2b6CAF6",
+      //   app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
+      //   appmaxprice: "0",
+      //   datasetmaxprice: "0",
+      //   workerpoolmaxprice: "0",
+      //   volume: "1",
+      //   category: "1",
+      //   params: JSON.stringify(params),
+      // });
+
+      // const singedRequest = await iExec.order.signRequestorder(requestOrder);
+
+      // const deal = await iExec.order.matchOrders({
+      //   apporder: signedAppOrder,
+      //   workerpoolorder: signedWorkerPoolOrder,
+      //   requestorder: singedRequest,
+      // });
+
+      // console.log("Deal submitted", deal);
+      // try {
+      //   const deal = await iExec.order.matchOrders({
+      //     apporder: await iExec.order.createApporder({
+      //       app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
+      //       appprice: "0",
+      //       volume: "1",
+      //     }),
+      //     workerpoolorder: await iExec.order.createWorkerpoolorder({
+      //       workerpool: "0x5AA676E7991cB55d2b87ec0915E36Cc7e7B9c8eD",
+      //       workerpoolprice: "0",
+      //       volume: "1",
+      //     }),
+      //     requestorder: await iExec.order.createRequestorder({
+      //       requester: "0x35bC01A7e00568960e158e59486de522E2b6CAF6",
+      //       app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
+      //       category: "1",
+      //       params: JSON.stringify({}),
+      //     }),
+      //   });
+      // } catch (e) {}
+    })();
+  }, []);
 
   useEffect(() => {
     if (!injectedETh) return;
@@ -849,22 +937,22 @@ export default function Home() {
     contract && setContract(contract);
   }, [injectedETh, setContract]);
 
-  useEffect(() => {
-    if (!address || !contract) return;
+  // useEffect(() => {
+  //   if (!address || !contract) return;
 
-    (async () => {
-      const res = await contract.methods
-        .getUserHistory(address)
-        .call({ from: address });
+  //   (async () => {
+  //     const res = await contract.methods
+  //       .getUserHistory(address)
+  //       .call({ from: address });
 
-      if (!res) {
-        console.log("Failed to interact with contract");
-        return;
-      }
+  //     if (!res) {
+  //       console.log("Failed to interact with contract");
+  //       return;
+  //     }
 
-      localStorage.setItem("firstAccess", String(res.length == 0));
-    })();
-  }, [address, contract]);
+  //     localStorage.setItem("firstAccess", String(res.length == 0));
+  //   })();
+  // }, [address, contract]);
 
   const closeAll = () => {
     setIsNetworkSwitchHighlighted(false);
@@ -914,14 +1002,15 @@ export default function Home() {
         {address ? (
           <div className={styles.mainCTA}>
             <h1>Ready to Start ?</h1>
-            <GoogleButton
+            {/* <GoogleButton
               onClick={() =>
                 signIn("google", {
                   redirect: true,
                   callbackUrl: "/dashboard",
                 })
               }
-            />
+            /> */}
+            <GoogleButton onClick={() => test()} />
           </div>
         ) : (
           <h1>Connect your wallet</h1>
