@@ -5,8 +5,8 @@ export const authOptions = {
   secret: process.env.SECRET,
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
       authorization: {
         url: "https://accounts.google.com/o/oauth2/v2/auth",
         params: {
