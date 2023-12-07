@@ -1,18 +1,15 @@
-import CheckButton from "@/components/checkButton";
 import { useDataProvider } from "@/context";
-import { IMAGE_5k, IMAGE_6k, IMAGE_EXEC } from "@/index";
+import { IMAGE_5k, IMAGE_EXEC } from "@/index";
 import styles from "@/styles/Home.module.css";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import GoogleButton from "react-google-button";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
 // import CheckButton from "../../src/components/CheckButton";
 
 export default function Dashboard() {
-  const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
-    useState(false);
-  const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
   const { data: session } = useSession();
   const {
     getIsFirstAccess,
@@ -861,8 +858,6 @@ export default function Dashboard() {
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-    console.log("contract", contract);
-
     contract && setContract(contract);
   }, [injectedETh, setContract]);
   const isFirstAccess = getIsFirstAccess();
@@ -951,11 +946,6 @@ export default function Dashboard() {
     }
   }, [session, setLastReading]);
 
-  const closeAll = () => {
-    setIsNetworkSwitchHighlighted(false);
-    setIsConnectHighlighted(false);
-  };
-
   const mintFirstNFT = async () => {
     setWelcomeLoading(true);
     setWelcomeMessage("Loading ...");
@@ -1000,107 +990,59 @@ export default function Dashboard() {
   };
 
   return (
-    <>
-      <header>
-        <div
-          className={styles.backdrop}
-          style={{
-            opacity: isConnectHighlighted || isNetworkSwitchHighlighted ? 1 : 0,
-          }}
-        />
-        <div className={styles.header}>
-          <div className={styles.logo}>
-            <h2>WELL WELL WELL</h2>
+    <section className={styles.sectionFullScreen}>
+      <div className={styles.dashboardContainer}>
+        <div className={styles.gridColsTwo}>
+          <div className={styles.flexCenterCol}>
+            <h2>Todays Challenge</h2>
+            <Image
+              alt="Daily Goal NFT"
+              className={styles.dashboardImage}
+              src={IMAGE_5k}
+              onClick={async () => {
+                const res = await fetch(
+                  `/api/historical?refreshToken=${
+                    (session as any).refreshToken
+                  }`
+                );
+
+                if (res) {
+                  const { data: parsedData } = await res.json();
+                  console.log("data", parsedData);
+                }
+              }}
+            />
+            <div className={styles.dashboardBtn}>Try and claim it</div>
           </div>
-          <div className={styles.buttons}>
-            <div
-              onClick={closeAll}
-              className={`${styles.highlight} ${
-                isNetworkSwitchHighlighted ? styles.highlightSelected : ``
-              }`}
-            >
-              <w3m-network-button />
-            </div>
-            <div
-              onClick={closeAll}
-              className={`${styles.highlight} ${
-                isConnectHighlighted ? styles.highlightSelected : ``
-              }`}
-            >
-              <w3m-button />
-            </div>
+          <div className={styles.flexCenterCol}>
+            <h2>Last Accomplishment</h2>
+            <Image
+              alt="Last Accomplishment NFT"
+              className={styles.dashboardImage}
+              src={IMAGE_5k}
+            />
           </div>
         </div>
-      </header>
-      <main className={styles.dashboardMain}>
-        <div className={styles.dashboard}>
-          <div className={styles.topSection}>
-            <div className={styles.dailyGoal}>
-              <div className={styles.mainCTA}>
-                <h1>Daily Objective</h1>
-                <Image
-                  src={IMAGE_6k}
-                  height={200}
-                  width={200}
-                  alt="Objective"
-                />
-              </div>
-            </div>
-            <div className={styles.lastAchievement}>
-              <div className={styles.mainCTA}>
-                <h1>Last Accomplishment</h1>
-                <Image
-                  src={IMAGE_5k}
-                  height={200}
-                  width={200}
-                  alt="last-Accomplishment"
-                />
-              </div>
-            </div>
-          </div>
-
-          {isFirstAccess ? (
-            <div className={styles.mainCTA}>
-              <h1>First time here?</h1>
-              {welcomeLoading ? (
-                <span className={styles.error}>{welcomeMessage}</span>
-              ) : (
-                <button className={styles.startedButton} onClick={mintFirstNFT}>
-                  Mint your first NFT
-                </button>
-              )}
-            </div>
-          ) : (
-            <div className={styles.mainCTA}>
-              <h1>Ready to show your work?</h1>
-              {mintLoading ? (
-                <span className={styles.error}>{mintMessage}</span>
-              ) : (
-                <button
-                  className={styles.startedButton}
-                  onClick={mintTodaysNFT}
-                >
-                  Claim todays NFT
-                </button>
-              )}
-            </div>
-          )}
-
-          <div className={styles.mainToggleCTA}>
-            <div className={styles.toggleCTA}>
-              <h1>Want to be notified of new goals?</h1>
-              <CheckButton
-                onClick={() => toggleNotifications(!grantAccess)}
-                checked={grantAccess}
-              />
-            </div>
-            <div className={styles.toggleCTA}>
-              <h3>All data protected by </h3>
-              <Image src={IMAGE_EXEC} height={75} width={150} alt="iExec" />
-            </div>
-          </div>
+        <div className={styles.bottomSection}>
+          <h2 className={styles.bottomSectionText}>
+            Ready to show todays work?
+          </h2>
+          <GoogleButton
+            onClick={() =>
+              signIn("google", {
+                redirect: true,
+                callbackUrl: "/dashboard",
+              })
+            }
+          />
         </div>
-      </main>
-    </>
+      </div>
+      <footer className={styles.dashboardFooter}>
+        <div className={styles.toggleCTA}>
+          <h3>All data protected by </h3>
+          <Image src={IMAGE_EXEC} height={44} width={120} alt="iExec" />
+        </div>
+      </footer>
+    </section>
   );
 }

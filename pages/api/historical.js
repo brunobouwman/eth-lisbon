@@ -41,11 +41,12 @@ async function getGoogleHistoricalData(refreshToken) {
   console.log(":::", process.env.GOOGLE_CLIENT_ID);
   console.log(":::", process.env.GOOGLE_CLIENT_SECRET);
   console.log(":::", refreshToken);
+  console.log("here??");
   const url =
     "https://oauth2.googleapis.com/token?" +
     new URLSearchParams({
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
       grant_type: "refresh_token",
       refresh_token: refreshToken,
     });
@@ -69,6 +70,8 @@ async function getGoogleHistoricalData(refreshToken) {
     console.log(">>>>>>>", error);
     return { userData: [], error: "Error refreshing access token" };
   }
+
+  console.log("refreshedToken", refreshedToken.access_token);
 
   // Get the user's data sources from the Google API
   let dataSources;

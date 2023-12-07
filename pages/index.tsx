@@ -3,106 +3,28 @@
 import { useDataProvider } from "@/context";
 import styles from "@/styles/Home.module.css";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import GoogleButton from "react-google-button";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
 
 export default function Home() {
-  const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
-    useState(false);
-  const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address } = useAccount();
   const { setContract, getContract } = useDataProvider();
   const injectedETh = window.ethereum;
   const contract = getContract();
+  const router = useRouter();
 
-  const test = async () => {
-    const response = await fetch("http://localhost:3000/api/updateHealthData", {
-      method: "POST",
-    });
-  };
+  // const test = async () => {
+  //   const res = await fetch("http://localhost:3000/api/updateHealthData", {
+  //     method: "POST",
+  //   });
 
-  useEffect(() => {
-    console.log("here");
-    const params = {
-      // Format your parameters similar to how they are passed in Docker
-      iexec_args: "encryptTest 0xabcdefghijklmnopqrstuv 'Test data to encrypt'",
-    };
+  //   console.log("res", res);
+  //   const response = await res.json();
 
-    (async () => {
-      if (!window.ethereum) return;
-
-      // const response = await fetch(
-      //   "http://localhost:3000/api/updateHealthData",
-      //   { method: "POST" }
-      // );
-      // const chainId = 134;
-
-      // const iExec = new IExec({ ethProvider: 134 });
-      // console.log("exec", iExec);
-
-      // const appOrder = await iExec.order.createApporder({
-      //   app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
-      //   appprice: "0",
-      //   volume: "1",
-      // });
-
-      // const signedAppOrder = await iExec.order.signApporder(appOrder);
-
-      // const workerPoolOrder = await iExec.order.createWorkerpoolorder({
-      //   workerpool: "0x5AA676E7991cB55d2b87ec0915E36Cc7e7B9c8eD",
-      //   workerpoolprice: "0",
-      //   volume: "1",
-      //   category: "1",
-      // });
-
-      // const signedWorkerPoolOrder = await iExec.order.signWorkerpoolorder(
-      //   workerPoolOrder
-      // );
-
-      // const requestOrder = await iExec.order.createRequestorder({
-      //   requester: "0x35bC01A7e00568960e158e59486de522E2b6CAF6",
-      //   app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
-      //   appmaxprice: "0",
-      //   datasetmaxprice: "0",
-      //   workerpoolmaxprice: "0",
-      //   volume: "1",
-      //   category: "1",
-      //   params: JSON.stringify(params),
-      // });
-
-      // const singedRequest = await iExec.order.signRequestorder(requestOrder);
-
-      // const deal = await iExec.order.matchOrders({
-      //   apporder: signedAppOrder,
-      //   workerpoolorder: signedWorkerPoolOrder,
-      //   requestorder: singedRequest,
-      // });
-
-      // console.log("Deal submitted", deal);
-      // try {
-      //   const deal = await iExec.order.matchOrders({
-      //     apporder: await iExec.order.createApporder({
-      //       app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
-      //       appprice: "0",
-      //       volume: "1",
-      //     }),
-      //     workerpoolorder: await iExec.order.createWorkerpoolorder({
-      //       workerpool: "0x5AA676E7991cB55d2b87ec0915E36Cc7e7B9c8eD",
-      //       workerpoolprice: "0",
-      //       volume: "1",
-      //     }),
-      //     requestorder: await iExec.order.createRequestorder({
-      //       requester: "0x35bC01A7e00568960e158e59486de522E2b6CAF6",
-      //       app: "0xc38aeD5DB047cFbCC20Aef91F8749bF3391E9bC3",
-      //       category: "1",
-      //       params: JSON.stringify({}),
-      //     }),
-      //   });
-      // } catch (e) {}
-    })();
-  }, []);
+  //   console.log("api route response in index: ", response);
+  // };
 
   useEffect(() => {
     if (!injectedETh) return;
@@ -930,34 +852,35 @@ export default function Home() {
         type: "function",
       },
     ];
+
     const contractAddress = "0x1e2319EdBfb7BB0e9311898113747F42A65C74e0";
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
-
     contract && setContract(contract);
   }, [injectedETh, setContract]);
 
-  // useEffect(() => {
-  //   if (!address || !contract) return;
+  useEffect(() => {
+    if (!address || !contract) return;
 
-  //   (async () => {
-  //     const res = await contract.methods
-  //       .getUserHistory(address)
-  //       .call({ from: address });
+    (async () => {
+      try {
+        const res = await contract.methods
+          .getUserHistory(address)
+          .call({ from: address });
 
-  //     if (!res) {
-  //       console.log("Failed to interact with contract");
-  //       return;
-  //     }
+        if (!res) {
+          console.log("Failed to interact with contract");
+          return;
+        }
 
-  //     localStorage.setItem("firstAccess", String(res.length == 0));
-  //   })();
-  // }, [address, contract]);
+        localStorage.setItem("firstAccess", String(res.length == 0));
+      } catch (err) {
+        console.log("err", err);
+      }
+    })();
 
-  const closeAll = () => {
-    setIsNetworkSwitchHighlighted(false);
-    setIsConnectHighlighted(false);
-  };
+    router.push("/dashboard");
+  }, [address, contract, router]);
 
   return (
     <>
@@ -967,53 +890,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <div
-          className={styles.backdrop}
-          style={{
-            opacity: isConnectHighlighted || isNetworkSwitchHighlighted ? 1 : 0,
-          }}
-        />
-        <div className={styles.header}>
-          <div className={styles.logo}>
-            <h2>WELL WELL WELL</h2>
-          </div>
-          <div className={styles.buttons}>
-            <div
-              onClick={closeAll}
-              className={`${styles.highlight} ${
-                isNetworkSwitchHighlighted ? styles.highlightSelected : ``
-              }`}
-            >
-              <w3m-network-button />
-            </div>
-            <div
-              onClick={closeAll}
-              className={`${styles.highlight} ${
-                isConnectHighlighted ? styles.highlightSelected : ``
-              }`}
-            >
-              <w3m-button />
-            </div>
-          </div>
-        </div>
-      </header>
       <main className={styles.main}>
-        {address ? (
+        {!address && (
           <div className={styles.mainCTA}>
-            <h1>Ready to Start ?</h1>
-            {/* <GoogleButton
-              onClick={() =>
-                signIn("google", {
-                  redirect: true,
-                  callbackUrl: "/dashboard",
-                })
-              }
-            /> */}
-            <GoogleButton onClick={() => test()} />
+            <h1>Ready to Start ? Connect your wallet.</h1>
           </div>
-        ) : (
-          <h1>Connect your wallet</h1>
         )}
       </main>
     </>

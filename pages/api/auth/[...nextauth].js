@@ -26,16 +26,14 @@ export const authOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         token.refreshToken = account.refresh_token;
+        console.log('refresh token: ', token.refreshToken);
       }
-      console.log("token", JSON.stringify(token));
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.refreshToken = token.refreshToken;
       }
-      console.log("token", JSON.stringify(token));
-      console.log("session", JSON.stringify(session));
       return session;
     },
   },
