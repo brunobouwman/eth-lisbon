@@ -1,6 +1,7 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
+console.log("secret", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
 export const authOptions = {
   secret: process.env.SECRET,
   providers: [
@@ -26,7 +27,7 @@ export const authOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         token.refreshToken = account.refresh_token;
-        console.log('refresh token: ', token.refreshToken);
+        console.log("refresh token: ", token.refreshToken);
       }
       return token;
     },
